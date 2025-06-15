@@ -1,4 +1,6 @@
-# Beets-audible: Organize Your Audiobook Collection With Beets
+# Beets-audible: Organize Your Audiobook Collection With Beets Working 2025
+Fork of the Fork of Seanap's beets-audible plugin,  https://github.com/seanap/beets-audible , working 2025!
+
 This is my fork of the awesome Beets-Audible plug-in made by Neurrone https://github.com/Neurrone/beets-audible
 
 This is a plugin that allows Beets to manage audiobook collections.
