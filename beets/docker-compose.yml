@@ -1,17 +1,21 @@
 version: "3"
 services:
   beets:
-    image: lscr.io/linuxserver/beets:latest
+    # Use 'beets-custom:latest' if building the Dockerfile in this repo,
+    # otherwise use 'lscr.io/linuxserver/beets:latest' and enable EXTRA_PIPS.
+    image: beets-custom:latest # <--- Updated to use the custom image
     container_name: beets
     environment:
-      # Update as needed
-      - PUID=1000
-      - PGID=1000
-      - TZ=Asia/Singapore
+      - PUID=1000 # Your User ID
+      - PGID=1000 # Your Group ID
+      - TZ=America/New_York # Your Timezone (e.g., Asia/Singapore, America/New_York)
+      # - EXTRA_PIPS=natsort markdownify # This line can be removed if using the custom image build
     volumes:
       - ./config:/config
       - ./plugins:/plugins
-      - ./scripts:/config/custom-cont-init.d
-      - /path/to/plex/audiobooks:/audiobooks
-      - /path/to/temp/untagged:/untagged
+      # If you're using custom init scripts (like install-deps.sh), uncomment the line below.
+      # However, for robust dependency installation, building a custom image (as above) is recommended.
+      # - ./scripts:/config/custom-cont-init.d
+      - /path/to/plex/audiobooks:/audiobooks # Path to your audiobook library
+      - /path/to/temp/untagged:/untagged # Path for untagged/new files
     restart: unless-stopped

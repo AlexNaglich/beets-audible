@@ -19,22 +19,51 @@ This was developed to handle book files with no tags, bad tags, or that need to 
 
 ### With Docker
 
-1. `git clone https://github.com/seanap/beets-audible.git` # Open a terminal and clone this repository  
-2. `nano beets-audible/beets/docker-compose.yml` # Edit `docker-compose.yml`  
-    * Update the following lines:
-      * `PUID`
-      * `PGID`
-      * `TZ`
+1.  **Clone the Repository:**
+    ```bash
+    git clone [https://github.com/AlexNaglich/beets-audible.git](https://github.com/AlexNaglich/beets-audible.git)
+    ```
+    This is now your "root" for this project
+
+2.  **Build Your Custom Beets Image:**
+
+    This step ensures all necessary Python dependencies (`natsort`, `markdownify`) for the `audible` plugin are reliably installed.
+    ```bash
+    cd beets-audible/beets
+    docker build -t beets-custom:latest .
+    ```
+
+3.  **Configure Docker Compose (`docker-compose.yml`):**
+
+    `nano beets-audible/beets/docker-compose.yml`
+
+    * Update `PUID`, `PGID`, `TZ`, and your volume paths
       * `/path/to/plex/audibooks` # Location of your plex audiobooks folder
       * `/path/to/temp/untagged` # Location of Untagged books ready for tagging
-3. `nano beets-audible/beets/config/config.yaml` # Edit `config.yaml`  
-    * Update the `Plex` section at the end of the file:
+
+4.  **Configure Beets Config (`config/config.yaml`):**
+
+    `nano beets-audible/beets/config/config.yaml`
+
+    Edit `config/config.yaml` to update your Plex details (`host`, `token`, `library_name`) under the `plexupdate` section.
       * `host` # IP of plex server
       * `token` # https://support.plex.tv/hc/en-us/articles/204059436-Finding-your-account-token-X-Plex-Token
       * `library_name` # Name of plex audiobook library
-4. `cd beets-audible/beets && docker-compose up -d` # Start the container
-7. `docker exec -it beets sh` # Start the interactive shell inside the beets container
-8. `beet --version` # Verify that the audible plugin appears in the list of plugins.
+
+5.  **Start and Verify:**
+
+    Stop any old containers and start the new one:
+    ```bash
+    cd beets-audible/beets
+    docker compose down --volumes --remove-orphans
+    docker compose up -d
+    ```
+    Verify the `audible` plugin is loading:
+    ```bash
+    docker exec -it beets sh -c 'beet --version'
+    ```
+    You should see `audible` listed in the plugins.
+
 
 ## Usage
 
